@@ -71,274 +71,203 @@ export default function Blog() {
 
   return (
 
-    <Box>
+  <Box
+    sx={{
+      overflowX: "hidden",
+      background: "#f8fafc",
+      minHeight: "100vh",
+    }}
+  >
 
-      {/* HERO */}
+    
+
+    {/* MAIN CONTENT */}
+
+    <Container
+      maxWidth="xl"
+
+      sx={{
+        py: {
+          xs: 5,
+          md: 8,
+        },
+
+        px: {
+          xs: 2,
+          sm: 3,
+          md: 4,
+        },
+      }}
+    >
+
+      {/* FILTERS */}
 
       <Box
         sx={{
-          minHeight: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          px: 3,
-          background:
-            "linear-gradient(to right, #0f172a, #1e293b)",
-          color: "white",
+          display: "grid",
+
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "2fr 1fr 1fr",
+          },
+
+          gap: 2,
+
+          mb: 7,
         }}
       >
 
-        <Box>
+        <TextField
+          fullWidth
 
-          <Typography
-            fontWeight={800}
-            gutterBottom
-            sx={{
-              fontSize: {
-                xs: "2.5rem",
-                md: "4.5rem",
-              },
-            }}
-          >
-            Discover Stories,
-            Ideas & Tech
-          </Typography>
+          label="Search Blogs"
 
-          <Typography
-            variant="h6"
-            sx={{
-              maxWidth: 700,
-              mx: "auto",
-              opacity: 0.8,
-              mb: 4,
-            }}
-          >
-            Explore modern web
-            development and technology.
-          </Typography>
+          value={search}
 
-        </Box>
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
 
-      </Box>
-
-      {/* CONTENT */}
-
-      <Container sx={{ py: 8 }}>
-
-        {/* FILTERS */}
-
-        <Box
           sx={{
-            display: "flex",
-            gap: 2,
-            flexWrap: "wrap",
-            mb: 5,
+            background: "white",
+            borderRadius: 3,
+          }}
+        />
+
+        <TextField
+          select
+
+          fullWidth
+
+          label="Category"
+
+          value={category}
+
+          onChange={(e) =>
+            setCategory(e.target.value)
+          }
+
+          sx={{
+            background: "white",
+            borderRadius: 3,
           }}
         >
 
-          <TextField
-            label="Search Blogs"
-            value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
-            sx={{ flex: 1 }}
-          />
+          <MenuItem value="">
+            All Categories
+          </MenuItem>
 
-          <TextField
-            select
-            label="Category"
-            value={category}
-            onChange={(e) =>
-              setCategory(e.target.value)
-            }
-            sx={{ width: 200 }}
-          >
+          <MenuItem value="React">
+            React
+          </MenuItem>
 
-            <MenuItem value="">
-              All
-            </MenuItem>
+          <MenuItem value="MERN">
+            MERN
+          </MenuItem>
 
-            <MenuItem value="React">
-              React
-            </MenuItem>
+          <MenuItem value="Technology">
+            Technology
+          </MenuItem>
 
-            <MenuItem value="MERN">
-              MERN
-            </MenuItem>
+        </TextField>
 
-            <MenuItem value="Technology">
-              Technology
-            </MenuItem>
+        <TextField
+          select
 
-          </TextField>
+          fullWidth
 
-          <TextField
-            select
-            label="Sort"
-            value={sort}
-            onChange={(e) =>
-              setSort(e.target.value)
-            }
-            sx={{ width: 200 }}
-          >
+          label="Sort"
 
-            <MenuItem value="newest">
-              Newest
-            </MenuItem>
+          value={sort}
 
-            <MenuItem value="oldest">
-              Oldest
-            </MenuItem>
+          onChange={(e) =>
+            setSort(e.target.value)
+          }
 
-          </TextField>
+          sx={{
+            background: "white",
+            borderRadius: 3,
+          }}
+        >
 
-        </Box>
+          <MenuItem value="newest">
+            Newest
+          </MenuItem>
 
-        {/* HEADING */}
+          <MenuItem value="oldest">
+            Oldest
+          </MenuItem>
+
+        </TextField>
+
+      </Box>
+
+      {/* HEADING */}
+
+      <Box
+        sx={{
+          mb: 5,
+          textAlign: {
+            xs: "center",
+            md: "left",
+          },
+        }}
+      >
 
         <Typography
-          variant="h4"
-          fontWeight={700}
-          gutterBottom
-          sx={{ mb: 5 }}
+          variant="h3"
+
+          fontWeight={800}
+
+          sx={{
+            fontSize: {
+              xs: "2rem",
+              md: "3rem",
+            },
+
+            mb: 1,
+          }}
         >
           Featured Blogs
         </Typography>
 
-        {/* LOADING */}
 
-        {loading && (
+      </Box>
 
-          <Grid container spacing={4}>
+      {/* LOADING */}
 
-            {[1,2,3].map((item) => (
-
-              <Grid
-                item
-                xs={12}
-                md={4}
-                key={item}
-              >
-
-                <Card
-                  sx={{
-                    borderRadius: 4,
-                  }}
-                >
-
-                  <Skeleton
-                    variant="rectangular"
-                    height={240}
-                  />
-
-                  <CardContent>
-
-                    <Skeleton height={40} />
-
-                    <Skeleton height={20} />
-
-                    <Skeleton height={20} />
-
-                  </CardContent>
-
-                </Card>
-
-              </Grid>
-            ))}
-          </Grid>
-        )}
-
-        {/* BLOG GRID */}
+      {loading && (
 
         <Grid container spacing={4}>
 
-          {blogs.map((blog) => (
+          {[1, 2, 3].map((item) => (
 
             <Grid
               item
               xs={12}
               sm={6}
               md={4}
-              key={blog._id}
+              key={item}
             >
 
               <Card
                 sx={{
-                  height: "100%",
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  transition:
-                    "0.3s ease",
-
-                  "&:hover": {
-                    transform:
-                      "translateY(-10px)",
-                    boxShadow: 8,
-                  },
+                  borderRadius: 5,
                 }}
               >
 
-                <CardMedia
-                  component="img"
-                  height="240"
-                  image={blog.image}
-                  alt={blog.title}
+                <Skeleton
+                  variant="rectangular"
+                  height={260}
                 />
 
                 <CardContent>
 
-                  <Chip
-                    label={blog.category}
-                    color="primary"
-                    size="small"
-                    sx={{ mb: 2 }}
-                  />
+                  <Skeleton height={40} />
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    By{" "}
-                    {blog.author?.name
-                      || "Admin"}
-                  </Typography>
+                  <Skeleton height={20} />
 
-                  <Typography
-                    variant="h5"
-                    fontWeight={700}
-                    gutterBottom
-                  >
-                    {blog.title}
-                  </Typography>
-
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      mb: 3,
-                      lineHeight: 1.8,
-                    }}
-                  >
-                    {blog.content.slice(
-                      0,
-                      120
-                    )}...
-                  </Typography>
-
-                  <Button
-                    component={Link}
-                    to={`/blog/${blog._id}`}
-                    variant="contained"
-                    fullWidth
-                    sx={{
-                      borderRadius: 3,
-                    }}
-                  >
-                    Read More
-                  </Button>
+                  <Skeleton height={20} />
 
                 </CardContent>
 
@@ -346,53 +275,256 @@ export default function Blog() {
 
             </Grid>
           ))}
+
         </Grid>
+      )}
 
-        {/* EMPTY */}
+      {/* BLOG GRID */}
 
-        {!loading &&
-          blogs.length === 0 && (
+      <Grid container spacing={4}>
 
-          <Box
-            sx={{
-              py: 10,
-              textAlign: "center",
-            }}
+        {blogs.map((blog) => (
+
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            lg={4}
+            key={blog._id}
           >
 
-            <Typography
-              variant="h5"
-              fontWeight={700}
+            <Card
+              sx={{
+                height: "100%",
+
+                borderRadius: 5,
+
+                overflow: "hidden",
+
+                background: "white",
+
+                boxShadow:
+                  "0 10px 30px rgba(0,0,0,0.06)",
+
+                transition: "0.35s",
+
+                "&:hover": {
+                  transform:
+                    "translateY(-10px)",
+
+                  boxShadow:
+                    "0 20px 40px rgba(0,0,0,0.12)",
+                },
+              }}
             >
-              No blogs found
-            </Typography>
 
-          </Box>
-        )}
+              <CardMedia
+                component="img"
 
-      </Container>
+                height="250"
 
-      {/* FLOATING BUTTON */}
+                image={blog.image}
 
-      <Button
-        component={Link}
-        to="/create-blog"
-        variant="contained"
-        startIcon={<AddIcon />}
-        sx={{
-          position: "fixed",
-          bottom: 30,
-          right: 30,
-          borderRadius: 10,
-          px: 3,
-          py: 1.5,
-          boxShadow: 6,
-          zIndex: 1000,
-        }}
-      >
-        Create
-      </Button>
+                alt={blog.title}
 
-    </Box>
-  );
+                sx={{
+                  objectFit: "cover",
+                }}
+              />
+
+              <CardContent
+                sx={{
+                  p: 3,
+                }}
+              >
+
+                <Chip
+                  label={blog.category}
+
+                  size="small"
+
+                  sx={{
+                    mb: 2,
+
+                    background:
+                      "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+                    color: "white",
+
+                    fontWeight: 600,
+                  }}
+                />
+
+                <Typography
+                  variant="body2"
+
+                  color="text.secondary"
+
+                  sx={{ mb: 1 }}
+                >
+                  By{" "}
+                  {blog.author?.name ||
+                    "Admin"}
+                </Typography>
+
+                <Typography
+                  variant="h5"
+
+                  fontWeight={800}
+
+                  gutterBottom
+
+                  sx={{
+                    fontSize: {
+                      xs: "1.4rem",
+                      md: "1.7rem",
+                    },
+                  }}
+                >
+                  {blog.title}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+
+                  color="text.secondary"
+
+                  sx={{
+                    mb: 3,
+
+                    lineHeight: 1.8,
+
+                    minHeight: 70,
+                  }}
+                >
+                  {blog.content.slice(
+                    0,
+                    120
+                  )}
+                  ...
+                </Typography>
+
+                <Button
+                  component={Link}
+                  to={`/blog/${blog._id}`}
+
+                  variant="contained"
+
+                  fullWidth
+
+                  sx={{
+                    py: 1.3,
+
+                    borderRadius: 3,
+
+                    fontWeight: 700,
+
+                    background:
+                      "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+                    "&:hover": {
+                      opacity: 0.95,
+                    },
+                  }}
+                >
+                  Read More
+                </Button>
+
+              </CardContent>
+
+            </Card>
+
+          </Grid>
+        ))}
+
+      </Grid>
+
+      {/* EMPTY STATE */}
+
+      {!loading &&
+        blogs.length === 0 && (
+
+        <Box
+          sx={{
+            py: 14,
+            textAlign: "center",
+          }}
+        >
+
+          <Typography
+            variant="h4"
+
+            fontWeight={800}
+
+            gutterBottom
+          >
+            No blogs found
+          </Typography>
+
+          <Typography
+            color="text.secondary"
+          >
+            Try changing filters or
+            search keywords.
+          </Typography>
+
+        </Box>
+      )}
+
+    </Container>
+
+    {/* FLOATING BUTTON */}
+
+    <Button
+      component={Link}
+      to="/create-blog"
+
+      variant="contained"
+
+      startIcon={<AddIcon />}
+
+      sx={{
+        position: "fixed",
+
+        bottom: {
+          xs: 20,
+          md: 30,
+        },
+
+        right: {
+          xs: 20,
+          md: 30,
+        },
+
+        borderRadius: 99,
+
+        px: {
+          xs: 2.5,
+          md: 3.5,
+        },
+
+        py: 1.5,
+
+        fontWeight: 700,
+
+        background:
+          "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+        boxShadow:
+          "0 10px 30px rgba(99,102,241,0.45)",
+
+        zIndex: 1000,
+
+        "&:hover": {
+          transform: "translateY(-3px)",
+        },
+
+        transition: "0.3s",
+      }}
+    >
+      Create
+    </Button>
+
+  </Box>
+);
 }

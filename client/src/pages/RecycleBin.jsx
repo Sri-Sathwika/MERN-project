@@ -56,154 +56,430 @@ export default function RecycleBin() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
-     {/* Header Section */}
-<Box 
-  sx={{ 
-    display: "flex", 
-    alignItems: "center", 
-    gap: 2, 
-    mb: 6, // Increased margin bottom for better breathing room
-    mt: 2  // Slight margin top to prevent it from hugging the screen top
-  }}
->
-  <IconButton
-    onClick={() => navigate("/")}
+  <Container
+    maxWidth="xl"
     sx={{
-      width: 46,
-      height: 46,
-      background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-      color: "white",
-      boxShadow: "0px 4px 12px rgba(124, 58, 237, 0.25)",
-      "&:hover": {
-        transform: "translateX(-3px)", // Sophisticated left-pointing nudge on hover
-        background: "linear-gradient(135deg, #1d4ed8, #6d28d9)",
+      py: {
+        xs: 3,
+        sm: 4,
+        md: 6,
       },
-      transition: "all 0.2s ease-in-out",
-    }}
-  >
-    <ArrowBackIcon sx={{ fontSize: 22 }} />
-  </IconButton>
-  
-  <Typography 
-    variant="h4" 
-    fontWeight={800} 
-    sx={{ 
-      color: "text.primary",
-      letterSpacing: "-0.5px", // Cleaner typography style
-      lineHeight: 1
-    }}
-  >
-    Recycle Bin
-  </Typography>
-</Box>
 
-      {/* Main Content Conditional Rendering */}
-      {blogs.length === 0 ? (
-        /* Enhanced Empty State */
-        <Box
+      px: {
+        xs: 2,
+        sm: 3,
+        md: 4,
+      },
+
+      minHeight: "100vh",
+    }}
+  >
+
+    {/* HEADER */}
+
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        mb: {
+          xs: 4,
+          md: 6,
+        },
+      }}
+    >
+
+      {/* BACK BUTTON */}
+
+      <IconButton
+        onClick={() => navigate("/")}
+
+        sx={{
+          position: "fixed",
+
+          top: {
+            xs: 16,
+            sm: 24,
+          },
+
+          left: {
+            xs: 16,
+            sm: 24,
+          },
+
+          width: {
+            xs: 48,
+            sm: 54,
+          },
+
+          height: {
+            xs: 48,
+            sm: 54,
+          },
+
+          background:
+            "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+          color: "white",
+
+          boxShadow:
+            "0 8px 25px rgba(99,102,241,0.35)",
+
+          zIndex: 1000,
+
+          "&:hover": {
+            transform: "scale(1.08)",
+            background:
+              "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+          },
+
+          transition: "0.3s",
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+
+      {/* TITLE */}
+
+      <Box sx={{ textAlign: "center" }}>
+
+        <Typography
+          variant="h4"
+
+          fontWeight={800}
+
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "50vh",
-            textAlign: "center",
-            px: 2,
+            fontSize: {
+              xs: "2rem",
+              sm: "2.5rem",
+              md: "3rem",
+            },
+
+            background:
+              "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+            WebkitBackgroundClip: "text",
+
+            WebkitTextFillColor:
+              "transparent",
+
+            mb: 1,
           }}
         >
-          <DeleteSweepTwoToneIcon 
-            sx={{ fontSize: 80, color: "action.disabled", mb: 2, opacity: 0.7 }} 
-          />
-          <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
-            Recycle Bin is empty
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 400 }}>
-            Your deleted blogs will show up here. You can either restore them or delete them permanently.
-          </Typography>
-        </Box>
-      ) : (
-        /* Cards Grid Layout */
-        <Grid container spacing={4}>
-          {blogs.map((blog) => (
-            <Grid item xs={12} sm={6} md={4} key={blog._id}>
-              <Card
+          Recycle Bin
+        </Typography>
+
+        <Typography
+          variant="body1"
+
+          color="text.secondary"
+
+          sx={{
+            fontSize: {
+              xs: "0.95rem",
+              sm: "1rem",
+            },
+          }}
+        >
+          Restore or permanently remove blogs
+        </Typography>
+
+      </Box>
+
+    </Box>
+
+    {/* EMPTY STATE */}
+
+    {blogs.length === 0 ? (
+
+      <Box
+        sx={{
+          minHeight: "60vh",
+
+          display: "flex",
+
+          flexDirection: "column",
+
+          justifyContent: "center",
+
+          alignItems: "center",
+
+          textAlign: "center",
+
+          px: 2,
+        }}
+      >
+
+        <DeleteSweepTwoToneIcon
+          sx={{
+            fontSize: {
+              xs: 70,
+              md: 90,
+            },
+
+            color: "#cbd5e1",
+
+            mb: 2,
+          }}
+        />
+
+        <Typography
+          variant="h5"
+
+          fontWeight={700}
+
+          gutterBottom
+        >
+          Recycle Bin is Empty
+        </Typography>
+
+        <Typography
+          color="text.secondary"
+
+          sx={{
+            maxWidth: 500,
+            lineHeight: 1.8,
+          }}
+        >
+          Deleted blogs will appear here.
+          You can restore them anytime
+          or permanently remove them.
+        </Typography>
+
+      </Box>
+
+    ) : (
+
+      <Grid container spacing={4}>
+
+        {blogs.map((blog) => (
+
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            lg={4}
+            key={blog._id}
+          >
+
+            <Card
+              sx={{
+                height: "100%",
+
+                display: "flex",
+
+                flexDirection: "column",
+
+                borderRadius: 5,
+
+                overflow: "hidden",
+
+                background:
+                  "rgba(255,255,255,0.75)",
+
+                backdropFilter: "blur(14px)",
+
+                border:
+                  "1px solid rgba(255,255,255,0.4)",
+
+                boxShadow:
+                  "0 10px 30px rgba(0,0,0,0.06)",
+
+                transition: "0.3s",
+
+                "&:hover": {
+                  transform:
+                    "translateY(-8px)",
+
+                  boxShadow:
+                    "0 20px 40px rgba(0,0,0,0.12)",
+                },
+              }}
+            >
+
+              <CardMedia
+                component="img"
+
+                image={
+                  blog.image ||
+                  "https://via.placeholder.com/400x250?text=No+Image"
+                }
+
+                alt={blog.title}
+
                 sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  borderRadius: 3,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                  "&:hover": {
-                    transform: "translateY(-4px)",
-                    boxShadow: "0 12px 30px rgba(0,0,0,0.1)",
+                  height: {
+                    xs: 220,
+                    sm: 240,
                   },
+
+                  objectFit: "cover",
+                }}
+              />
+
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+
+                  display: "flex",
+
+                  flexDirection: "column",
+
+                  p: 3,
                 }}
               >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={blog.image || "https://via.placeholder.com/400x200?text=No+Image"}
-                  alt={blog.title}
-                  sx={{ objectFit: "cover" }}
-                />
-                
-                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyBetween: "space-between", p: 3 }}>
-                  <Typography 
-                    variant="h6" 
-                    fontWeight={700} 
-                    gutterBottom
+
+                <Typography
+                  variant="h6"
+
+                  fontWeight={700}
+
+                  gutterBottom
+
+                  sx={{
+                    fontSize: {
+                      xs: "1.1rem",
+                      md: "1.3rem",
+                    },
+
+                    overflow: "hidden",
+
+                    textOverflow: "ellipsis",
+
+                    display: "-webkit-box",
+
+                    WebkitLineClamp: 2,
+
+                    WebkitBoxOrient:
+                      "vertical",
+                  }}
+                >
+                  {blog.title}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+
+                  color="text.secondary"
+
+                  sx={{
+                    mb: 3,
+
+                    lineHeight: 1.7,
+
+                    overflow: "hidden",
+
+                    textOverflow: "ellipsis",
+
+                    display: "-webkit-box",
+
+                    WebkitLineClamp: 3,
+
+                    WebkitBoxOrient:
+                      "vertical",
+                  }}
+                >
+                  {blog.content}
+                </Typography>
+
+                {/* ACTION BUTTONS */}
+
+                <Box
+                  sx={{
+                    mt: "auto",
+
+                    display: "flex",
+
+                    flexDirection: {
+                      xs: "column",
+                      sm: "row",
+                    },
+
+                    gap: 2,
+                  }}
+                >
+
+                  <Button
+                    fullWidth
+
+                    variant="contained"
+
+                    startIcon={<RestoreIcon />}
+
+                    onClick={() =>
+                      handleRestore(blog._id)
+                    }
+
                     sx={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
+                      py: 1.2,
+
+                      borderRadius: 3,
+
+                      fontWeight: 700,
+
+                      textTransform: "none",
+
+                      background:
+                        "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+                      "&:hover": {
+                        background:
+                          "llinear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+                      },
                     }}
                   >
-                    {blog.title}
-                  </Typography>
+                    Restore
+                  </Button>
 
-                  <Box sx={{ display: "flex", gap: 1.5, mt: "auto", pt: 2 }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      startIcon={<RestoreIcon />}
-                      onClick={() => handleRestore(blog._id)}
-                      sx={{
-                        borderRadius: 2,
-                        textTransform: "none",
-                        fontWeight: 600,
-                        backgroundColor: "#2563eb",
-                        "&:hover": { backgroundColor: "#1d4ed8" }
-                      }}
-                    >
-                      Restore
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      color="error"
-                      startIcon={<DeleteForeverIcon />}
-                      onClick={() => handlePermanentDelete(blog._id)}
-                      sx={{
-                        borderRadius: 2,
-                        textTransform: "none",
-                        fontWeight: 600,
-                        borderWidth: "1.5px",
-                        "&:hover": { borderWidth: "1.5px" }
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </Container>
-  );
+                  <Button
+                    fullWidth
+
+                    variant="outlined"
+
+                    color="error"
+
+                    startIcon={
+                      <DeleteForeverIcon />
+                    }
+
+                    onClick={() =>
+                      handlePermanentDelete(
+                        blog._id
+                      )
+                    }
+
+                    sx={{
+                      py: 1.2,
+
+                      borderRadius: 3,
+
+                      fontWeight: 700,
+
+                      textTransform: "none",
+
+                      borderWidth: 2,
+
+                      "&:hover": {
+                        borderWidth: 2,
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+
+                </Box>
+
+              </CardContent>
+
+            </Card>
+
+          </Grid>
+        ))}
+
+      </Grid>
+    )}
+
+  </Container>
+);
 }

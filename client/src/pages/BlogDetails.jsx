@@ -3,11 +3,14 @@ import {
   Typography,
   Card,
   CardMedia,
-  CircularProgress,
   Chip,
   Box,
   Button,
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import {
   useParams,
@@ -28,7 +31,8 @@ export default function BlogDetails() {
 
   const navigate = useNavigate();
 
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] =
+    useState(null);
 
   const [loading, setLoading] =
     useState(true);
@@ -65,61 +69,74 @@ export default function BlogDetails() {
 
   const handleDelete = async () => {
 
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this blog?"
-  );
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this blog?"
+      );
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  try {
+    try {
 
-    const token =
-      localStorage.getItem("token");
+      await API.delete(`/blogs/${id}`);
 
-    console.log(token);
+      alert(
+        "Blog deleted successfully"
+      );
 
-    console.log(id);
+      navigate("/");
 
-    await API.delete(`/blogs/${id}`);
+    } catch (error) {
 
-    alert("Blog deleted successfully");
+      console.log(error);
 
-    navigate("/");
+      alert(
+        error.response?.data?.message ||
+        "Failed to delete blog"
+      );
+    }
+  };
 
-  } catch (error) {
-
-    console.log(error.response);
-
-    alert(
-      error.response?.data?.message
-    );
-  }
-};
+  /* LOADING STATE */
 
   if (loading) {
 
     return (
-      <Container
+
+      <Box
         sx={{
-          py: 5,
+          minHeight: "100vh",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
+          background: "#f8fafc",
         }}
       >
+
         <CircularProgress />
-      </Container>
+
+      </Box>
     );
   }
+
+  /* BLOG NOT FOUND */
 
   if (!blog) {
 
     return (
-      <Container sx={{ py: 5 }}>
 
-        <Typography variant="h5">
+      <Container
+        sx={{
+          py: 10,
+          textAlign: "center",
+        }}
+      >
 
-          Blog not found!
-
+        <Typography
+          variant="h4"
+          fontWeight={700}
+        >
+          Blog not found
         </Typography>
 
       </Container>
@@ -128,121 +145,297 @@ export default function BlogDetails() {
 
   return (
 
-    <Container
-      maxWidth="md"
-      sx={{ py: 5 }}
+    <Box
+      sx={{
+        background: "#f8fafc",
+        minHeight: "100vh",
+        py: {
+          xs: 3,
+          md: 6,
+        },
+        px: {
+          xs: 2,
+          sm: 3,
+        },
+      }}
     >
 
-      <Card
+      {/* BACK BUTTON */}
+
+      <IconButton
+        onClick={() => navigate("/")}
+
         sx={{
-          borderRadius: 4,
-          overflow: "hidden",
-          boxShadow: 4,
+          position: "fixed",
+
+          top: {
+            xs: 16,
+            md: 24,
+          },
+
+          left: {
+            xs: 16,
+            md: 24,
+          },
+
+          width: {
+            xs: 46,
+            md: 54,
+          },
+
+          height: {
+            xs: 46,
+            md: 54,
+          },
+
+          background:
+            "linear-gradient(90deg,#020617 0%,#08112b 35%,#172554 100%)",
+
+          color: "white",
+
+          zIndex: 1000,
+
+          boxShadow:
+            "0 10px 30px rgba(0,0,0,0.25)",
+
+          "&:hover": {
+            transform:
+              "translateX(-4px)",
+
+            background:
+              "linear-gradient(90deg,#020617 0%,#08112b 35%,#172554 100%)",
+          },
+
+          transition: "0.3s",
         }}
       >
 
-        <CardMedia
-          component="img"
-          height="400"
-          image={blog.image}
-          alt={blog.title}
-        />
+        <ArrowBackIcon />
 
-        <Box sx={{ p: 4 }}>
+      </IconButton>
 
-          <Chip
-            label={blog.category}
-            color="primary"
-            sx={{ mb: 2 }}
+      {/* MAIN CONTENT */}
+
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: {
+            xs: 6,
+            md: 4,
+          },
+        }}
+      >
+
+        <Card
+          sx={{
+            borderRadius: {
+              xs: 4,
+              md: 6,
+            },
+
+            overflow: "hidden",
+
+            background: "white",
+
+            boxShadow:
+              "0 20px 50px rgba(0,0,0,0.08)",
+          }}
+        >
+
+          {/* IMAGE */}
+
+          <CardMedia
+            component="img"
+
+            image={
+              blog?.image ||
+              "https://via.placeholder.com/1200x600"
+            }
+
+            alt={blog?.title}
+
+            sx={{
+              width: "100%",
+
+              height: {
+                xs: 240,
+                sm: 320,
+                md: 450,
+              },
+
+              objectFit: "cover",
+            }}
           />
 
-          <Typography
-            variant="h2"
-            fontWeight={800}
-            gutterBottom
+          {/* CONTENT */}
+
+          <Box
             sx={{
-    lineHeight: 1.2,
-  }}
+              p: {
+                xs: 3,
+                sm: 4,
+                md: 5,
+              },
+            }}
           >
-            {blog.title}
-          </Typography>
 
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ mb: 3 }}
-          >
-            By {blog.author?.name || "Unknown"}
-          </Typography>
+            {/* CATEGORY */}
 
-          <Typography
-            variant="body1"
-            sx={{
-  lineHeight: 2.1,
-  fontSize: "1.1rem",
-  color: "#444",
-}}
-          >
-            {blog.content}
-          </Typography>
+            <Chip
+              label={
+                blog?.category ||
+                "General"
+              }
 
-          <Typography
-  variant="body2"
-  color="text.secondary"
-  sx={{ mb: 3 }}
->
-  Written by
-  {" "}
-  <strong>
-    {blog.author?.name}
-  </strong>
-</Typography>
+              sx={{
+                mb: 3,
 
-          {user?._id === blog?.author?._id && (
+                background:
+                  "linear-gradient(90deg,#020617 0%,#08112b 35%,#172554 100%)",
 
-            <Box sx={{ mt: 4 }}>
+                color: "white",
 
-              <Button
-                component={Link}
-                to={`/edit-blog/${blog._id}`}
-                variant="contained"
+                fontWeight: 700,
+              }}
+            />
+
+            {/* TITLE */}
+
+            <Typography
+              fontWeight={800}
+
+              gutterBottom
+
+              sx={{
+                lineHeight: 1.2,
+
+                fontSize: {
+                  xs: "2rem",
+                  sm: "3rem",
+                  md: "4rem",
+                },
+              }}
+            >
+              {blog?.title}
+            </Typography>
+
+            {/* AUTHOR */}
+
+            <Typography
+              variant="body1"
+
+              color="text.secondary"
+
+              sx={{
+                mb: 4,
+
+                fontSize: {
+                  xs: "0.95rem",
+                  md: "1rem",
+                },
+              }}
+            >
+              By{" "}
+
+              <strong>
+                {blog?.author?.name ||
+                  "Unknown"}
+              </strong>
+
+            </Typography>
+
+            {/* CONTENT */}
+
+            <Typography
+              sx={{
+                lineHeight: 2,
+
+                fontSize: {
+                  xs: "1rem",
+                  md: "1.1rem",
+                },
+
+                color: "#444",
+
+                whiteSpace: "pre-line",
+              }}
+            >
+              {blog?.content}
+            </Typography>
+
+            {/* ACTION BUTTONS */}
+
+            {user?._id ===
+              blog?.author?._id && (
+
+              <Box
+                sx={{
+                  display: "flex",
+
+                  gap: 2,
+
+                  flexWrap: "wrap",
+
+                  mt: 5,
+                }}
               >
-                Edit Blog
-              </Button>
 
-              <Button
-                variant="outlined"
-                color="error"
-                sx={{ ml: 2 }}
-                onClick={handleDelete}
-              >
-                Delete Blog
-              </Button>
+                <Button
+                  component={Link}
 
-            </Box>
-          )}
+                  to={`/edit-blog/${blog._id}`}
 
-        </Box>
+                  variant="contained"
 
-      </Card>
-  <Box sx={{ mt: 8 }}>
+                  sx={{
+                    borderRadius: 3,
 
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          gutterBottom
-        >
-          Similar Blogs
-        </Typography>
+                    px: 4,
 
-        <Typography
-          color="text.secondary"
-        >
-          More blogs coming soon...
-        </Typography>
+                    py: 1.2,
 
-      </Box>
+                    fontWeight: 700,
 
-    </Container>
+                    background:
+                      "linear-gradient(90deg,#020617 0%,#08112b 35%,#172554 100%)",
+
+                    "&:hover": {
+                      opacity: 0.95,
+                    },
+                  }}
+                >
+                  Edit Blog
+                </Button>
+
+                <Button
+                  variant="outlined"
+
+                  color="error"
+
+                  onClick={handleDelete}
+
+                  sx={{
+                    borderRadius: 3,
+
+                    px: 4,
+
+                    py: 1.2,
+
+                    fontWeight: 700,
+                  }}
+                >
+                  Delete Blog
+                </Button>
+
+              </Box>
+            )}
+
+          </Box>
+
+        </Card>
+
+      </Container>
+
+    </Box>
   );
 }
