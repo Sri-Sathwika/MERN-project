@@ -1,7 +1,6 @@
 import {
   Box,
   Typography,
-  Container,
 } from "@mui/material";
 
 import logo2 from "../../assets/images/logo.png";
