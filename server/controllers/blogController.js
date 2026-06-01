@@ -32,50 +32,46 @@ export const createBlog = async (req, res) => {
 };
 
 export const getBlogs = async (req, res) => {
-    try {
+  try {
+    const search = req.query.search || "";
+    const category = req.query.category || "";
+    const author = req.query.author || "";
+    const sort = req.query.sort || "newest";
 
-        const search = req.query.search || "";
+    let query = {
+      isDeleted: false,
+    };
 
-        const category = req.query.category || "";
-        const author = req.query.author || "";
-        const sort = req.query.sort || "newest";
-
-        let query = {
-            isDeleted: false,
-        };
-
-        if (search) {
-
-            query.title = {
-                $regex: search,
-                $options: "i",
-            };
-        }
-
-        if (category) {
-
-            query.category = category;
-        }
-        if (author) {
-
-            query.author = author;
-        }
-
-        const blogs = await Blog.find(query)
-            .sort(
-                sort === "oldest"
-                    ? { createdAt: 1 }
-                    : { createdAt: -1 }
-            )
-
-        res.status(200).json(blogs);
-
-    } catch (error) {
-
-        res.status(500).json({
-            message: error.message,
-        });
+    if (search) {
+      query.title = {
+        $regex: search,
+        $options: "i",
+      };
     }
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (author) {
+      query.author = author;
+    }
+
+    const blogs = await Blog.find(query)
+      .populate("author", "_id name") // ✅ FIX HERE
+      .sort(
+        sort === "oldest"
+          ? { createdAt: 1 }
+          : { createdAt: -1 }
+      );
+
+    res.status(200).json(blogs);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 export const getSingleBlog = async (req, res) => {
