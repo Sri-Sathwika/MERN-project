@@ -9,16 +9,17 @@ import {
 } from "@mui/material";
 
 import { useState } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import API from "../services/api";
-
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Login() {
-
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔥 where user came from (CreateBlog / other protected page)
+  const from = location.state?.from || "/";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -36,17 +37,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-
-      const response = await API.post(
-        "/auth/login",
-        formData
-      );
+      const response = await API.post("/auth/login", formData);
 
       // Save token
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
+      localStorage.setItem("token", response.data.token);
 
       // Save user
       localStorage.setItem(
@@ -56,10 +50,10 @@ export default function Login() {
 
       alert("Login successful");
 
-      navigate("/");
+      // 🔥 AUTO REDIRECT BACK TO PREVIOUS PAGE
+      navigate(from, { replace: true });
 
     } catch (error) {
-
       alert(
         error.response?.data?.message ||
         error.message
@@ -69,66 +63,28 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
-      
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: "relative",
-                        width: "100%",
-                    }}
-                >
 
-                    <IconButton
-                        onClick={() =>
-                            navigate("/")
-                        }
-                        sx={{
-                            position: "fixed",
+      {/* BACK BUTTON */}
+      <Box sx={{ position: "relative" }}>
+        <IconButton
+          onClick={() => navigate("/")}
+          sx={{
+            position: "fixed",
+            top: { xs: 18, sm: 24 },
+            left: { xs: 16, sm: 24 },
+            width: 52,
+            height: 52,
+            background:
+              "linear-gradient(90deg, #020617 0%, #172554 100%)",
+            color: "white",
+            zIndex: 1000,
+            "&:hover": { transform: "scale(1.08)" },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Box>
 
-                            top: {
-                                xs: 18,
-                                sm: 24,
-                            },
-
-                            left: {
-                                xs: 16,
-                                sm: 24,
-                            },
-
-                            width: {
-                                xs: 48,
-                                sm: 54,
-                            },
-
-                            height: {
-                                xs: 48,
-                                sm: 54,
-                            },
-
-                            background:
-                                "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
-
-                            color: "white",
-
-                            boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
-
-                            zIndex: 1000,
-
-                            "&:hover": {
-                                transform: "scale(1.08)",
-                                background:
-                                    "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
-                            },
-
-                            transition: "0.3s",
-                        }}
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>
-
-                    </Box>
       <Paper
         elevation={3}
         sx={{
@@ -145,10 +101,7 @@ export default function Login() {
           Login
         </Typography>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-        >
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             fullWidth
             label="Email"
@@ -175,6 +128,8 @@ export default function Login() {
               mt: 3,
               py: 1.5,
               borderRadius: 3,
+              background:
+                "linear-gradient(90deg, #020617 0%, #172554 100%)",
             }}
           >
             Login
@@ -185,7 +140,6 @@ export default function Login() {
               mt: 2,
               display: "flex",
               justifyContent: "center",
-              fontSize:"100px"
             }}
           >
             <Typography variant="body2">
