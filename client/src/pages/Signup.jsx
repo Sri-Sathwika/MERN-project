@@ -33,35 +33,32 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-    
-    try {
+  try {
+    const response = await API.post("/auth/signup", formData);
 
-      const response = await API.post(
-        "/auth/signup",
-        formData
-      );
+    console.log(response.data);
 
-      console.log(response.data);
+    // 🔥 FINAL ALERT + REDIRECT FLOW
+    alert("Profile created successfully. Login to publish some amazing blogs");
 
-      alert("Signup successful");
+    navigate("/login"); // 👈 redirect after clicking OK
 
-    } catch (error) {
+  } catch (error) {
+    console.log(error.response);
 
-      console.log(error.response);
-
-      alert(
-        error.response?.data?.message ||
-        error.message
-      );
-    }
-  };
+    alert(
+      error.response?.data?.message ||
+      error.message
+    );
+  }
+};
 
   return (
     <Container maxWidth="sm">

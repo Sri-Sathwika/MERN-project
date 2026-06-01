@@ -282,7 +282,15 @@ export default function AppAppBar() {
           >
             DevBlog
           </Typography>
-
+<Avatar
+                  sx={{
+                    bgcolor:
+                      "primary.main",
+                    fontWeight: 700,
+                  }}
+                >
+                  {user?.name?.charAt(0)}
+                </Avatar>
           <List>
 
             {user ? (
