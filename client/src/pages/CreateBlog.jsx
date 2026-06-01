@@ -75,7 +75,7 @@ export default function CreateBlog() {
             alert(
                 error.response?.data
                     ?.message ||
-                "Something went wrong"
+                "Login or Signup to create a blog"
             );
         }
     };

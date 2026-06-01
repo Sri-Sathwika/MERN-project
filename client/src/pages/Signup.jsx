@@ -7,7 +7,8 @@ import {
   Box,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useState} from "react";
+import { Link } from "react-router-dom";
 
 import API from "../services/api";
 
@@ -127,6 +128,28 @@ export default function Signup() {
           >
             Signup
           </Button>
+
+           <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              justifyContent: "center",
+              fontSize:"100px"
+            }}
+          >
+            <Typography variant="body2">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                style={{
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+              >
+                Login
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     </Container>

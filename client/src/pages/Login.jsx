@@ -9,7 +9,7 @@ import {
 
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import API from "../services/api";
 
@@ -116,6 +116,28 @@ export default function Login() {
           >
             Login
           </Button>
+
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              justifyContent: "center",
+              fontSize:"100px"
+            }}
+          >
+            <Typography variant="body2">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                style={{
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+              >
+                Sign Up
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     </Container>

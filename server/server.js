@@ -11,7 +11,10 @@ const app=express();
 
 app.use(
   cors({
-    origin: "https://mern-project-eta-roan.vercel.app",
+    origin: [
+      "http://localhost:3000",
+      "https://mern-project-eta-roan.vercel.app",
+    ],
     credentials: true,
   })
 );
