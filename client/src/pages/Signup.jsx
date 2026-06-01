@@ -5,14 +5,18 @@ import {
   Typography,
   Paper,
   Box,
+  IconButton,
 } from "@mui/material";
 
 import { useState} from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import API from "../services/api";
 
 export default function Signup() {
+
+  const navigate=useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -61,6 +65,65 @@ export default function Signup() {
 
   return (
     <Container maxWidth="sm">
+       <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative",
+                        width: "100%",
+                    }}
+                >
+
+                    <IconButton
+                        onClick={() =>
+                            navigate("/")
+                        }
+                        sx={{
+                            position: "fixed",
+
+                            top: {
+                                xs: 18,
+                                sm: 24,
+                            },
+
+                            left: {
+                                xs: 16,
+                                sm: 24,
+                            },
+
+                            width: {
+                                xs: 48,
+                                sm: 54,
+                            },
+
+                            height: {
+                                xs: 48,
+                                sm: 54,
+                            },
+
+                            background:
+                                "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+
+                            color: "white",
+
+                            boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
+
+                            zIndex: 1000,
+
+                            "&:hover": {
+                                transform: "scale(1.08)",
+                                background:
+                                    "linear-gradient(90deg,  #020617 0%,  #08112b 35%,  #172554 100%)",
+                            },
+
+                            transition: "0.3s",
+                        }}
+                    >
+                        <ArrowBackIcon />
+                    </IconButton>
+
+                    </Box>
       <Paper
         elevation={3}
         sx={{
